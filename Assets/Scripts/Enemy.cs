@@ -20,7 +20,7 @@ public class Enemy : MonoBehaviour
     public GameObject Coin;
     public GameObject Effect;
 
-    private bool isDead = false;
+    private bool isGameover = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -67,6 +67,13 @@ public class Enemy : MonoBehaviour
                 Instantiate(Effect, transform.position, Quaternion.identity);
             }
             TakeDamage(missile.missileDamage);
+        }
+
+        if (collision.tag == "Player")
+        {
+            isGameover = true;
+            Destroy(collision.gameObject);
+            Instantiate(Effect, transform.position, Quaternion.identity);
         }
     }
 
