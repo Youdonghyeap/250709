@@ -16,8 +16,6 @@ public class EnemyRespawner : MonoBehaviour
 
     int currectEnemyIndex = 0;
 
-    int spawncount = 0;
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -28,23 +26,12 @@ public class EnemyRespawner : MonoBehaviour
     {
         yield return new WaitForSeconds(3);
 
-        while (true)
+        while (!GameManager.Instance.isGameover)
         {
             for (int i = 0; i < arrPosX.Length; i++)
             {
+                currectEnemyIndex = Random.Range(0, 4);
                 SpawnEnemy(arrPosX[i], currectEnemyIndex, moveSpeed);
-            }
-
-            spawncount++;
-
-            if (spawncount % 2 == 0)
-            {
-                currectEnemyIndex++;
-                if (currectEnemyIndex >= Enemies.Length)
-                {
-                    currectEnemyIndex = Enemies.Length - 1;
-                }
-                moveSpeed += 2;
             }
             yield return new WaitForSeconds(spawnInterval);
         }

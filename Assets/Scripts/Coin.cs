@@ -2,7 +2,10 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour
 {
+    public static Coin Instance;
     Rigidbody2D rb;
+
+    public bool isFromCoinBomb = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

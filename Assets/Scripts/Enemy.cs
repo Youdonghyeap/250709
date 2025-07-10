@@ -5,6 +5,7 @@ using UnityEngine.Experimental.GlobalIllumination;
 
 public class Enemy : MonoBehaviour
 {
+    public static Enemy Instance { get; private set; }
     public GameObject damageTextPrefab;
 
     private SpriteRenderer spriteRenderer;
@@ -19,8 +20,6 @@ public class Enemy : MonoBehaviour
 
     public GameObject Coin;
     public GameObject Effect;
-
-    private bool isGameover = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -44,6 +43,9 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.Instance != null && GameManager.Instance.isGameover)
+            return;
+            
         transform.position += Vector3.down * moveSpeed * Time.deltaTime;
         if (transform.position.y < -7f)
         {
@@ -71,9 +73,9 @@ public class Enemy : MonoBehaviour
 
         if (collision.tag == "Player")
         {
-            isGameover = true;
             Destroy(collision.gameObject);
             Instantiate(Effect, transform.position, Quaternion.identity);
+            GameManager.Instance.SetGameOver(false);
         }
     }
 

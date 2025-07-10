@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public static Player Instance;
+
     [SerializeField]
     float moveSpeed = 1f;
     int missIndex = 0;
@@ -14,6 +16,7 @@ public class Player : MonoBehaviour
     private float lastshotTime = 0f;
 
     private Animator animator;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
