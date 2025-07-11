@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using System;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,8 +16,12 @@ public class GameManager : MonoBehaviour
 
     public GameObject GameOverUI;
     public TextMeshProUGUI resultText;
+    public TextMeshProUGUI specialMissileCooldownText;
 
     public bool isGameover = false;
+
+    [SerializeField]
+    private Image specialMissileCooldownOverlay;
 
     [SerializeField]
     private int goal = 100;
@@ -44,6 +49,26 @@ public class GameManager : MonoBehaviour
         {
             GameOverUI.SetActive(false);
         }   
+    }
+
+    public void UpdateSpecialMissileCooldown(float cooldownRemaining, float maxCooldown)
+    {
+        if (specialMissileCooldownOverlay != null)
+        {
+            specialMissileCooldownOverlay.fillAmount = cooldownRemaining / maxCooldown;
+        }
+
+        if (specialMissileCooldownText != null)
+        {
+            if (cooldownRemaining > 0)
+            {
+                specialMissileCooldownText.SetText($"{cooldownRemaining:F1}s");
+            }
+            else
+            {
+                specialMissileCooldownText.SetText("READY!");
+            }
+        }
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

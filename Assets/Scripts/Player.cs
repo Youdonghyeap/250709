@@ -10,10 +10,15 @@ public class Player : MonoBehaviour
     public GameObject[] missilePrefab;
     public Transform spPostion;
 
+    public GameObject specialMissilePrefab;
+
     [SerializeField]
     private float shootInverval = 0.05f;
 
     private float lastshotTime = 0f;
+    [SerializeField]
+    private float specialMissileCooldown = 5f;
+    private float lastSpecialMissileTime = 0f;
 
     private Animator animator;
 
@@ -44,6 +49,13 @@ public class Player : MonoBehaviour
             animator.Play("Idle");
         }
         Shoot();
+
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            ShootSpecialMissile();
+        }
+
+        UpdateSpecialMissileCooldown();
     }
 
     void Shoot()
@@ -52,6 +64,30 @@ public class Player : MonoBehaviour
         {
             Instantiate(missilePrefab[missIndex], spPostion.position, Quaternion.identity);
             lastshotTime = Time.time;
+        }
+    }
+
+    void ShootSpecialMissile()
+    {
+        if (Time.time - lastSpecialMissileTime >= specialMissileCooldown)
+        {
+            if (specialMissilePrefab != null)
+            {
+                GameObject specialMissile = Instantiate(specialMissilePrefab, spPostion.position, Quaternion.identity);
+
+                specialMissile.transform.localScale = Vector3.one * 2f;
+                lastSpecialMissileTime = Time.time;
+            }
+        }
+    }
+
+    void UpdateSpecialMissileCooldown()
+    {
+        float cooldownRemaining = Mathf.Max(0f, specialMissileCooldown - (Time.time - lastSpecialMissileTime));
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.UpdateSpecialMissileCooldown(cooldownRemaining, specialMissileCooldown);
         }
     }
 
